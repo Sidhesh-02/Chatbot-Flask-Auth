@@ -3,13 +3,27 @@ import { Routes, Route } from "react-router-dom";
 import { Register } from "./pages/Register";
 import { Interface } from "./pages/Interface";
 import { Login } from "./pages/Login";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { NavbarDefault } from "./components/Navbar";
 
 function App() {
-  const [token,setToken] = useState();
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    // Check for token on initial render
+    const storedToken = localStorage.getItem('token');
+    if (storedToken !== token) {
+      setToken(storedToken);
+    }
+  }, [token]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+  };
   return (
       <>
+        <NavbarDefault token={token} handleLogout={handleLogout} />
         <Routes>
             <Route path = "/" element ={<Home/>}></Route>
             <Route path = "/register" element ={<Register/>}></Route>
@@ -17,7 +31,10 @@ function App() {
               path="/login"
               element={token ? <Navigate to="/interface" /> : <Login setToken={setToken} />}
             />
-            <Route path="/interface" element={token ? <Interface /> : <Navigate to="/login" />} />
+            <Route
+              path="/interface"
+              element={token ? <Interface /> : <Navigate to="/login" />}
+            />
         </Routes> 
       </>
   )

@@ -7,7 +7,6 @@ import {
   } from "@material-tailwind/react";
   import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavbarDefault } from "../components/Navbar";
 import { login } from "../../api/login";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer,toast } from "react-toastify";
@@ -26,16 +25,17 @@ import { ToastContainer,toast } from "react-toastify";
       };
     
     const handleError = (err) => toast.error(err);
-    const handleSuccess = (msg) => {toast.success(msg) , console.log("Success")};
+    const handleSuccess = (msg) => {toast.success(msg)};
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         const data = await login(inputValue);
         const { access_token, msg } = data;
         if (access_token) {
+          localStorage.setItem('token', access_token);
+          navigate("/interface");
           setToken(access_token);
           handleSuccess(msg);
-          navigate("/interface");
         } else {
           handleError(msg);
         }
@@ -46,7 +46,6 @@ import { ToastContainer,toast } from "react-toastify";
 
     return (
         <div>
-            <NavbarDefault/>
             <div className="flex justify-center h-screen items-center">
                 <Card onSubmit={handleSubmit} className="border border-gray-700 p-10" color="transparent" shadow={false}>
                     <Typography variant="h4" color="blue-gray">

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
-import { NavbarDefault } from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -62,7 +61,6 @@ export function Register() {
 
   return (
     <div className="">
-      <NavbarDefault />
       <div className="flex justify-center h-screen m-8 items-center">
         <Card
           className="border border-gray-700 p-10"
